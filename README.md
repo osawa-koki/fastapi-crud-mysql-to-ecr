@@ -14,7 +14,7 @@ ECRにプッシュされた当イメージを使用するためには、以下�
 | DB_PASSWORD | DBのパスワード |
 | DB_DATABASE | DBのデータベース名 |
 
-また、`./mysql_init/`ディレクトリ内のDDLのSQLが実行されることを前提としています。  
+また、`./mysql_init/`ディレクトリ内のSQLが実行されていることを前提としています。  
 
 ## ローカルでの開発
 
@@ -78,5 +78,5 @@ docker compose up -d db
 export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names fastapi-crud-app --query 'repositories[0].repositoryUri' --output text)
 aws ecr get-login-password | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}
 
-docker run --rm -p 80:80 --name fastapi-crud-app -e DB_HOST=$(ipconfig getifaddr en0) -e DB_PORT=3306 -e DB_USERNAME=root -e DB_PASSWORD=rootpassword ${ECR_REPOSITORY_URI}:latest
+docker run --rm -p 80:80 --name fastapi-crud-app -e DB_HOST=$(ipconfig getifaddr en0) -e DB_PORT=3306 -e DB_USERNAME=root -e DB_PASSWORD=rootpassword -e DB_DATABASE=mydb ${ECR_REPOSITORY_URI}:latest
 ```
