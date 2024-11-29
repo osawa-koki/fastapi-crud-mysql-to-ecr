@@ -43,7 +43,7 @@ jobs:
     needs: infra
     defaults:
       run:
-        working-directory: ./fastapi-db-app/
+        working-directory: ./fastapi-app/
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Set ECR repository URI
         run: |
-          export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names fastapi-db-app --query 'repositories[0].repositoryUri' --output text)
+          export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names fastapi-crud-app --query 'repositories[0].repositoryUri' --output text)
           echo "ECR_REPOSITORY_URI=$ECR_REPOSITORY_URI" >> $GITHUB_ENV
       - name: Login
         run: aws ecr get-login-password | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }}
