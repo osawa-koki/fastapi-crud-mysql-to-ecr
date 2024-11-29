@@ -2,6 +2,10 @@
 
 🎑🎑🎑 簡単なFastAPIアプリケーション(DB/MySQLのCRUD操作あり)をECRにデプロイしてみる！  
 
+[![ci](https://github.com/osawa-koki/fastapi-crud-mysql-to-ecr/actions/workflows/ci.yml/badge.svg)](https://github.com/osawa-koki/fastapi-crud-mysql-to-ecr/actions/workflows/ci.yml)
+[![cd](https://github.com/osawa-koki/fastapi-crud-mysql-to-ecr/actions/workflows/cd.yml/badge.svg)](https://github.com/osawa-koki/fastapi-crud-mysql-to-ecr/actions/workflows/cd.yml)
+[![Dependabot Updates](https://github.com/osawa-koki/fastapi-crud-mysql-to-ecr/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/osawa-koki/fastapi-crud-mysql-to-ecr/actions/workflows/dependabot/dependabot-updates)
+
 ![成果物](./fruit.gif)  
 
 ## ECRをプルして利用するために必要な事項
@@ -74,9 +78,10 @@ GitHub Actionsでデプロイする場合には、以下のシークレットを
 タグをプッシュすると、GitHub Actionsがデプロイを行います。  
 手動でトリガーすることも可能です。  
 
----
+## デプロイ後の動作確認
 
 デプロイされたECRをローカルでテストする場合には、以下のコマンドを実行してください。  
+※ このコマンドはローカルで実行してください。  
 
 ```shell
 docker compose down
