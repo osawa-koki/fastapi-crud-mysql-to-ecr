@@ -53,15 +53,19 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      - name: Create dotenv file
+        run: echo '${{ secrets.DOTENV }}' > ./.env
       - name: Set ECR repository URI
         run: |
-          export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names fastapi-crud-app --query 'repositories[0].repositoryUri' --output text)
+          source .env
+          export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} --query 'repositories[0].repositoryUri' --output text)
           echo "ECR_REPOSITORY_URI=$ECR_REPOSITORY_URI" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY_NAME=$ECR_REPOSITORY_NAME" >> $GITHUB_ENV
       - name: Login
         run: aws ecr get-login-password | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY_URI }}
       - name: Build
-        run: docker build -t fastapi-db-app .
+        run: docker build -t ${{ env.ECR_REPOSITORY_NAME }} .
       - name: Tag
-        run: docker tag fastapi-db-app:latest ${{ env.ECR_REPOSITORY_URI }}:latest
+        run: docker tag ${{ env.ECR_REPOSITORY_NAME }}:latest ${{ env.ECR_REPOSITORY_URI }}:latest
       - name: Push
         run: docker push ${{ env.ECR_REPOSITORY_URI }}:latest

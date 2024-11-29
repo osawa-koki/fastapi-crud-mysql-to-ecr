@@ -6,8 +6,8 @@ export class IndexStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const repository = new ecr.Repository(this, 'FastapiCrudAppRepository', {
-      repositoryName: 'fastapi-crud-app',
+    const repository = new ecr.Repository(this, process.env.STACK_NAME!, {
+      repositoryName: process.env.ECR_REPOSITORY_NAME!,
     });
 
     new cdk.CfnOutput(this, 'RepositoryURI', {
