@@ -14,9 +14,12 @@ ECRにプッシュされた当イメージを使用するためには、以下�
 | DB_PASSWORD | DBのパスワード |
 | DB_DATABASE | DBのデータベース名 |
 
-また、`./mysql_init/`ディレクトリ内のDDLのSQLが実行されることを前提としています。  
+また、`./mysql_init/`ディレクトリ内のSQLが実行されていることを前提としています。  
 
 ## ローカルでの開発
+
+`.env.example`をコピーして、`.env`を作成してください。  
+中身を適切に設定してください。  
 
 以下のコマンドを実行してください。  
 
@@ -87,5 +90,6 @@ docker run --rm -p 80:80 --name ${ECR_REPOSITORY_NAME} \
   -e DB_PORT=3306 \
   -e DB_USERNAME=root \
   -e DB_PASSWORD=rootpassword \
+  -e DB_DATABASE=mydb \
   ${ECR_REPOSITORY_URI}:latest
 ```
