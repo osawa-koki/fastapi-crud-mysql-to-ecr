@@ -1,10 +1,13 @@
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
+import * as dotenv from 'dotenv';
 
 import * as IndexStack from '../lib';
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/rails-ecr-stack.ts
+beforeAll(() => {
+  dotenv.config();
+});
+
 test('ECR Repository Created', () => {
   const app = new cdk.App();
   const stack = new IndexStack.IndexStack(app, 'MyTestStack');

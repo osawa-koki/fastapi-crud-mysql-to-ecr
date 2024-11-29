@@ -48,11 +48,13 @@ DevContainerに入り、以下のコマンドを実行してください。
 ```shell
 cdk deploy
 
-export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names fastapi-crud-app --query 'repositories[0].repositoryUri' --output text)
+source .env
+
+export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} --query 'repositories[0].repositoryUri' --output text)
 aws ecr get-login-password | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}
 
-docker build -t fastapi-crud-app ./fastapi-app/
-docker tag fastapi-crud-app:latest ${ECR_REPOSITORY_URI}:latest
+docker build -t ${ECR_REPOSITORY_NAME} ./fastapi-app/
+docker tag ${ECR_REPOSITORY_NAME}:latest ${ECR_REPOSITORY_URI}:latest
 docker push ${ECR_REPOSITORY_URI}:latest
 ```
 
@@ -75,8 +77,16 @@ GitHub Actionsでデプロイする場合には、以下のシークレットを
 docker compose down
 docker compose up -d db
 
-export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names fastapi-crud-app --query 'repositories[0].repositoryUri' --output text)
+source .env
+
+export ECR_REPOSITORY_URI=$(aws ecr describe-repositories --repository-names ${ECR_REPOSITORY_NAME} --query 'repositories[0].repositoryUri' --output text)
 aws ecr get-login-password | docker login --username AWS --password-stdin ${ECR_REPOSITORY_URI}
 
-docker run --rm -p 80:80 --name fastapi-crud-app -e DB_HOST=$(ipconfig getifaddr en0) -e DB_PORT=3306 -e DB_USERNAME=root -e DB_PASSWORD=rootpassword -e DB_DATABASE=mydb ${ECR_REPOSITORY_URI}:latest
+docker run --rm -p 80:80 --name ${ECR_REPOSITORY_NAME} \
+  -e DB_HOST=$(ipconfig getifaddr en0) \
+  -e DB_PORT=3306 \
+  -e DB_USERNAME=root \
+  -e DB_PASSWORD=rootpassword \
+  -e DB_DATABASE=mydb \
+  ${ECR_REPOSITORY_URI}:latest
 ```

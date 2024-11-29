@@ -2,9 +2,14 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 
+import * as dotenv from 'dotenv';
+
 import { IndexStack } from '../lib';
 
+dotenv.config();
+
 const app = new cdk.App();
+
 new IndexStack(app, 'IndexStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
