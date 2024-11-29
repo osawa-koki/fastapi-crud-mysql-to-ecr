@@ -32,6 +32,8 @@ jobs:
         run: yarn install --frozen-lockfile --non-interactive
       - name: Install CDK
         run: npm install --global aws-cdk
+      - name: Create dotenv file
+        run: echo '${{ secrets.DOTENV }}' > ./.env
       - name: Synth
         run: cdk synth
       - name: Bootstrap
